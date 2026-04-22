@@ -1,4 +1,4 @@
-import * as core from '@actions/core'
+import { info, warning, error, setFailed } from '@actions/core'
 import { context as githubContext, getOctokit } from '@actions/github'
 import lint from '@commitlint/lint'
 import parserPreset from 'conventional-changelog-conventionalcommits'
@@ -14,7 +14,7 @@ export async function lintPR() {
   const client = getOctokit(GITHUB_TOKEN)
 
   if (!githubContext.payload.pull_request) {
-    core.setFailed(actionMessage.fail.pull_request.not_found)
+    setFailed(actionMessage.fail.pull_request.not_found)
     return
   }
 
@@ -31,10 +31,10 @@ export async function lintPR() {
     repo,
     pull_number
   })
-  core.info(`Found PR title: ${pullRequest.title}`)
+  info(`Found PR title: ${pullRequest.title}`)
 
   if (pullRequest.user?.login === 'dependabot[bot]') {
-    core.info('Skipping lint for dependabot PR')
+    info('Skipping lint for dependabot PR')
     return
   }
 
@@ -58,30 +58,30 @@ export async function lintPR() {
     })
 
     commitReport.warnings.forEach((warn) =>
-      core.warning(`Commit message: ${warn.message}`)
+      warning(`Commit message: ${warn.message}`)
     )
     commitReport.errors.forEach((err) =>
-      core.error(`Commit message: ${err.message}`)
+      error(`Commit message: ${err.message}`)
     )
 
     if (!commitReport.valid) {
-      core.setFailed(actionMessage.fail.commit.lint)
+      setFailed(actionMessage.fail.commit.lint)
     }
 
     if (COMMIT_TITLE_MATCH && pullRequest.title !== commitMessageSubject) {
-      core.setFailed(actionMessage.fail.commit.commit_title_match)
+      setFailed(actionMessage.fail.commit.commit_title_match)
     }
   } else {
     const titleReport = await lint(pullRequest.title, lintRules, {
       parserOpts
     })
     titleReport.warnings.forEach((warn) =>
-      core.warning(`PR title: ${warn.message}`)
+      warning(`PR title: ${warn.message}`)
     )
-    titleReport.errors.forEach((err) => core.error(`PR title: ${err.message}`))
+    titleReport.errors.forEach((err) => error(`PR title: ${err.message}`))
 
     if (!titleReport.valid) {
-      core.setFailed(actionMessage.fail.pull_request.lint)
+      setFailed(actionMessage.fail.pull_request.lint)
     }
   }
 }
