@@ -1,6 +1,6 @@
 import path from 'path'
 import configConventional from '@commitlint/config-conventional'
-import core from '@actions/core'
+import * as core from '@actions/core'
 
 import actionMessage from './action-message.js'
 
@@ -16,9 +16,9 @@ export default async function getLintRules(actionConfig) {
     const configPath = path.resolve(GITHUB_WORKSPACE, RULES_PATH)
     try {
       const localRules = await import(configPath)
-      overrideRules = localRules.rules
+      overrideRules = localRules.default?.rules ?? localRules.rules ?? {}
     } catch (e) {
-      if (e.code === 'MODULE_NOT_FOUND') {
+      if (e.code === 'MODULE_NOT_FOUND' || e.code === 'ERR_MODULE_NOT_FOUND') {
         core.warning(actionMessage.warning.action.rules_not_found)
       } else {
         throw e
