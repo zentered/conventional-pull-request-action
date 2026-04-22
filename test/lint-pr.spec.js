@@ -45,7 +45,7 @@ const githubClient = {
 
 const mockGetActionConfig = mock.fn(() => actionConfigResponse)
 
-mock.module('@actions/core', { exports: mockCore })
+mock.module('@actions/core', { namedExports: mockCore })
 mock.module('@actions/github', {
   exports: {
     getOctokit: mock.fn(() => githubClient),

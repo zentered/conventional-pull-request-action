@@ -11,7 +11,7 @@ const mockCore = {
   setFailed: mock.fn()
 }
 
-mock.module('@actions/core', { exports: mockCore })
+mock.module('@actions/core', { namedExports: mockCore })
 
 let getLintRules
 
