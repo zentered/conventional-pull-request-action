@@ -52,7 +52,7 @@ mock.module('@actions/github', {
     context: { payload: { pull_request: contextPrFixture } }
   }
 })
-mock.module('../src/utils.js', {
+mock.module(import.meta.resolve('../src/utils.js'), {
   exports: {
     getActionConfig: mockGetActionConfig,
     getCommitSubject: (msg = '') => msg.split('\n')[0]
