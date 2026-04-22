@@ -1,5 +1,5 @@
-import core from '@actions/core'
-import github from '@actions/github'
+import * as core from '@actions/core'
+import { context as githubContext, getOctokit } from '@actions/github'
 import lint from '@commitlint/lint'
 import parserPreset from 'conventional-changelog-conventionalcommits'
 
@@ -11,9 +11,9 @@ export async function lintPR() {
   const actionConfig = getActionConfig()
   const { GITHUB_TOKEN, COMMIT_TITLE_MATCH, IGNORE_COMMITS } = actionConfig
 
-  const client = github.getOctokit(GITHUB_TOKEN)
+  const client = getOctokit(GITHUB_TOKEN)
 
-  if (!github.context.payload.pull_request) {
+  if (!githubContext.payload.pull_request) {
     core.setFailed(actionMessage.fail.pull_request.not_found)
     return
   }
@@ -25,7 +25,7 @@ export async function lintPR() {
       user: { login: owner },
       repo: { name: repo }
     }
-  } = github.context.payload.pull_request
+  } = githubContext.payload.pull_request
 
   const { data: pullRequest } = await client.rest.pulls.get({
     owner,
@@ -35,9 +35,7 @@ export async function lintPR() {
   core.info(`Found PR title: ${pullRequest.title}`)
 
   const lintRules = await getLintRules(actionConfig)
-  const {
-    conventionalChangelog: { parserOpts }
-  } = await parserPreset(null, null)
+  const { parser: parserOpts } = parserPreset()
 
   if (!IGNORE_COMMITS && pullRequest.commits <= 1) {
     const {
