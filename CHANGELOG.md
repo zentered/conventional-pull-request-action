@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/zentered/conventional-pull-request-action/compare/v0.3.1...v1.0.0) (2026-04-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js 24 is now the minimum required runtime
+
+### Features
+
+* require Node.js 24 ([11f168e](https://github.com/zentered/conventional-pull-request-action/commit/11f168e33a44dc29d60e2629ab4b7f64c83cdae3))
+* skip linting for dependabot[bot] PRs ([e673f1a](https://github.com/zentered/conventional-pull-request-action/commit/e673f1aae0b680e34fadaafc3b0c432ff3e1a149))
+
+
+### Bug Fixes
+
+* convert commitlint config to ESM, fix review issues ([9b6746a](https://github.com/zentered/conventional-pull-request-action/commit/9b6746aee05d8e8d8271107bdf5273e7f5f584b2))
+
 ## [0.2.0](https://github.com/CondeNast/conventional-pull-request-action/compare/v0.1.2...v0.2.0) (2023-01-03)
 
 
