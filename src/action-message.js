@@ -16,7 +16,7 @@ export default {
       checkout:
         'ACTION(commitlintRulesPath): actions/checkout@v2 is required to load your commitlint rules file',
       rules_not_found:
-        'ACTION(commitlintRules ): rules module not found, using default @commitlint/config-conventional lint rules...'
+        'ACTION(commitlintRules): rules module not found, using default @commitlint/config-conventional lint rules...'
     }
   }
 }

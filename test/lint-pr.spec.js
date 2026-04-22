@@ -92,10 +92,6 @@ describe('lintPR', () => {
     assert.strictEqual(mockCore.setFailed.mock.callCount(), 0)
   })
 
-  it('fails when contextual pull request is not found', async () => {
-    // TODO: contextual pull request test
-  })
-
   it('skips linting for dependabot PRs', async () => {
     pullsGetResponse = {
       data: { ...prFixture, title: 'bump lodash from 4.0.0 to 4.1.0', user: { login: 'dependabot[bot]' } }

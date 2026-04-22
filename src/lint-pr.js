@@ -19,7 +19,6 @@ export async function lintPR() {
   }
 
   const {
-    // eslint-disable-next-line camelcase
     number: pull_number,
     base: {
       user: { login: owner },
