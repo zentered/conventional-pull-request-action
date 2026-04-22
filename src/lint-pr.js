@@ -34,6 +34,11 @@ export async function lintPR() {
   })
   core.info(`Found PR title: ${pullRequest.title}`)
 
+  if (pullRequest.user?.login === 'dependabot[bot]') {
+    core.info('Skipping lint for dependabot PR')
+    return
+  }
+
   const lintRules = await getLintRules(actionConfig)
   const { parser: parserOpts } = parserPreset()
 

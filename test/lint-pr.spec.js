@@ -96,6 +96,16 @@ describe('lintPR', () => {
     // TODO: contextual pull request test
   })
 
+  it('skips linting for dependabot PRs', async () => {
+    pullsGetResponse = {
+      data: { ...prFixture, title: 'bump lodash from 4.0.0 to 4.1.0', user: { login: 'dependabot[bot]' } }
+    }
+
+    await lintPR()
+    assert.strictEqual(mockCore.setFailed.mock.callCount(), 0)
+    assert.ok(calledWith(mockCore.info, 'Skipping lint for dependabot PR'))
+  })
+
   describe('when pull request has one commit', () => {
     describe('when IGNORE_COMMITS is true', () => {
       it('passes if commit message is not conventional', async () => {
