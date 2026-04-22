@@ -1,6 +1,5 @@
 import { describe, it, before, beforeEach, mock } from 'node:test'
 import assert from 'node:assert/strict'
-import actionConfigFixture from './fixtures/action-config.js'
 import actionMessage from '../src/action-message.js'
 
 const commitFixture = {
@@ -25,7 +24,6 @@ const prFixture = {
 
 let pullsGetResponse = { data: prFixture }
 let listCommitsResponse = { data: [{ commit: commitFixture }] }
-let actionConfigResponse = actionConfigFixture
 
 const mockCore = {
   info: mock.fn(),
@@ -43,19 +41,11 @@ const githubClient = {
   }
 }
 
-const mockGetActionConfig = mock.fn(() => actionConfigResponse)
-
 mock.module('@actions/core', { namedExports: mockCore })
 mock.module('@actions/github', {
-  exports: {
+  namedExports: {
     getOctokit: mock.fn(() => githubClient),
     context: { payload: { pull_request: contextPrFixture } }
-  }
-})
-mock.module(import.meta.resolve('../src/utils.js'), {
-  exports: {
-    getActionConfig: mockGetActionConfig,
-    getCommitSubject: (msg = '') => msg.split('\n')[0]
   }
 })
 
@@ -68,11 +58,14 @@ before(async () => {
 function resetMocks() {
   pullsGetResponse = { data: prFixture }
   listCommitsResponse = { data: [{ commit: commitFixture }] }
-  actionConfigResponse = actionConfigFixture
+  process.env.INPUT_COMMITTITLEMATCH = 'true'
+  process.env.INPUT_IGNORECOMMITS = 'false'
+  process.env.GITHUB_TOKEN = 'asdf'
+  delete process.env.INPUT_COMMITLINTRULESPATH
+  delete process.env.GITHUB_WORKSPACE
   for (const fn of [
     mockCore.info, mockCore.warning, mockCore.error, mockCore.setFailed,
-    githubClient.rest.pulls.get, githubClient.rest.pulls.listCommits,
-    mockGetActionConfig
+    githubClient.rest.pulls.get, githubClient.rest.pulls.listCommits
   ]) fn.mock.resetCalls()
 }
 
@@ -105,7 +98,7 @@ describe('lintPR', () => {
   describe('when pull request has one commit', () => {
     describe('when IGNORE_COMMITS is true', () => {
       it('passes if commit message is not conventional', async () => {
-        actionConfigResponse = { ...actionConfigFixture, IGNORE_COMMITS: true }
+        process.env.INPUT_IGNORECOMMITS = 'true'
         listCommitsResponse = { data: [{ commit: { ...commitFixture, message: 'not conventional' } }] }
 
         await lintPR()
@@ -124,7 +117,7 @@ describe('lintPR', () => {
 
     describe('when COMMIT_TITLE_MATCH is false', () => {
       it('passes when pr title does not match the commit subject', async () => {
-        actionConfigResponse = { ...actionConfigFixture, COMMIT_TITLE_MATCH: false }
+        process.env.INPUT_COMMITTITLEMATCH = 'false'
         pullsGetResponse = { data: { ...prFixture, title: 'feat: does not match commit' } }
 
         await lintPR()
