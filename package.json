@@ -19,7 +19,7 @@
   ],
   "main": "src/main.js",
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "scripts": {
     "check": "opensource-check --path ./",
