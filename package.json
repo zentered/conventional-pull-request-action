@@ -17,10 +17,10 @@
   "contributors": [
     "Patrick Heneise <https://patrickheneise.com>"
   ],
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
     "check": "opensource-check --path ./",
-    "prepare": "ncc build main.js -o dist --source-map --license licenses.txt",
+    "prepare": "ncc build src/main.js -o dist --source-map --license licenses.txt",
     "release": "standard-version --no-verify",
     "tdd": "node --test --watch --experimental-test-module-mocks test/*.spec.js",
     "test": "node --test --experimental-test-module-mocks test/*.spec.js"

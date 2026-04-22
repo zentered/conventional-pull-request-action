@@ -44257,7 +44257,7 @@ async function lintPR() {
   }
 }
 
-;// CONCATENATED MODULE: ./main.js
+;// CONCATENATED MODULE: ./src/main.js
 
 
 
