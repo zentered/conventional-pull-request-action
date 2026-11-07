@@ -8,6 +8,8 @@ _Proudly built by:_
 
 <a href="https://technology.condenast.com"><img src="https://user-images.githubusercontent.com/1215971/35070721-3f136cdc-fbac-11e7-81b4-e3aa5cc70a17.png" title="Conde Nast Technology" width=350/></a>
 
+_Maintained by_ [Zentered](https://github.com/zentered). This repository is a fork of the Conde Nast action, kept because the upstream action still runs on node12.
+
 - [Usage](#usage)
 
   - [Configuration](#configuration)
@@ -47,9 +49,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # check for the most recent release: https://github.com/CondeNast/conventional-pull-request-action/releases
-      # replace vX.X.X below with the most recently released version
-      - uses: CondeNast/conventional-pull-request-action@vX.X.X
+      # check for the most recent release: https://github.com/zentered/conventional-pull-request-action/releases
+      # v1 is the major line maintained by Zentered; pin a full tag such as v1.0.0 to lock a version
+      - uses: zentered/conventional-pull-request-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -112,7 +114,7 @@ git commit
 
 ### Release
 
-We use [Release Please](https://github.com/google-github-actions/release-please-action) to automate releases.
+We use [Release Please](https://github.com/googleapis/release-please-action) to automate releases.
 
 Once feature/bugfix/etc PRs are merged, a Release Pull Request should be automatically created, approve the PR and merge.
 
