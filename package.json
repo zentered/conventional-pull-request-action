@@ -4,13 +4,13 @@
   "type": "module",
   "description": "Lint pull requests with the conventional commit spec for a clean and conventional commit history",
   "keywords": [],
-  "homepage": "https://github.com/CondeNast/conventional-pull-request#readme",
+  "homepage": "https://github.com/zentered/conventional-pull-request-action#readme",
   "bugs": {
-    "url": "https://github.com/CondeNast/conventional-pull-request/issues"
+    "url": "https://github.com/zentered/conventional-pull-request-action/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CondeNast/conventional-pull-request.git"
+    "url": "git+https://github.com/zentered/conventional-pull-request-action.git"
   },
   "license": "Apache-2.0",
   "author": "Matt Bedell <matt@bedell.co> (https://bedell.co/)",
